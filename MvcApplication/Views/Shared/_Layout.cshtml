@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header>
+        <nav class="header navbar navbar-default navbar-inverse" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse loginMenu" id="bs-example-navbar-collapse-1">
+
+                    @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">@User.Identity.Name <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">                                    
+                                    <li>@Html.ActionLink("Exit", "LogOff", "Account", new {@class ="logOff"})</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="navbar-form navbar-right">
+                            <a class=" btn btn-info login" href="/Account/Login">Login</a>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="login-conteiner col-md-3 col-md-offset-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-lock"></span> Login
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new Dictionary<string, object> { { "data-toggle", "validator" },{"class","loginForm"} }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="form-group ">
+                        <div class="input-group col-sm-10 col-sm-offset-1">
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </span>
+                            @Html.TextBox("Login", null, new { @class = "form-control", @placeholder = "Enter login" })
+                        </div>
+                        @Html.ValidationMessage("Login")
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group col-sm-10 col-sm-offset-1">
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </span>
+                            @Html.TextBox("Password", null, new { @class = "form-control", @placeholder = "Enter password", @type = "password" })
+                        </div>
+                        @Html.ValidationMessage("Password")
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBox("RememberMe")
+                                    Remember me
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group last">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button type="submit" class="btn btn-success btn-sm loginSubmit">
+                                Sign in
+                            </button>
+                            <button type="reset" class="btn btn-default btn-sm">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="panel-footer">
+                Not Registred? <a href="">Register here</a>
+            </div>
+        </div>
+    </div>
+
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/JavaScript.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.bootstrap.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
