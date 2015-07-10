@@ -14,5 +14,20 @@ namespace MvcApplication.Controllers
             return View();
         }
 
+        public ActionResult Product()
+        {
+            return View();
+        }
+        public ActionResult AboutUs()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult Career()
+        {
+            return View();
+        }
+
     }
 }

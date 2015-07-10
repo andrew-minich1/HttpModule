@@ -11,17 +11,17 @@ namespace MvcApplication.Controllers
     public class AccountController : Controller
     {
 
-
         [HttpGet]
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -38,7 +38,14 @@ namespace MvcApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        if(returnUrl!=null)
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                 }
                 else

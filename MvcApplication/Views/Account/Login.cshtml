@@ -10,7 +10,7 @@
             <span class="glyphicon glyphicon-lock"></span> Login
         </div>
         <div class="panel-body">
-            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new Dictionary<string, object> { { "data-toggle", "validator" } }))
+            @using (Html.BeginForm("Login", "Account", new { returnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new Dictionary<string, object> { { "data-toggle", "validator" } }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)

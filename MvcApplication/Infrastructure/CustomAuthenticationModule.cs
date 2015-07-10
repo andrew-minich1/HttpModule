@@ -16,6 +16,7 @@ namespace MvcApplication.Infrastructure
         public void Init(HttpApplication context)
         {
             context.AuthenticateRequest += new EventHandler(this.OnAuthenticate);
+            context.EndRequest += new EventHandler(this.OnEndRequest);
         }
         public void Dispose()
         {
@@ -30,6 +31,7 @@ namespace MvcApplication.Infrastructure
             HttpCookie cookie = null;
             string cookieName = ".ASPXAUTH";
 
+            onAuthenticateCalled = true;
             if (context.User != null)
             {
                 return;
@@ -98,5 +100,31 @@ namespace MvcApplication.Infrastructure
                 context.Response.Cookies.Add(cookie);
             }
         }
+
+        void OnEndRequest(object sender, EventArgs e)
+        {
+
+            if (onAuthenticateCalled)
+                onAuthenticateCalled = false;
+            else
+                return;
+
+            HttpApplication app = (HttpApplication)sender;
+            HttpContext context = app.Context;
+
+            if (context.Response.StatusCode != 401)
+                return;
+
+            String strUrl = context.Request.RawUrl;
+            String loginUrl = WebConfigurationManager.AppSettings["loginUrl"];
+            if (null == loginUrl || loginUrl.Length < 1)
+                loginUrl = "~/Account/Login";
+            String strRedirect;
+            strRedirect = loginUrl + "?" + "returnUrl" + "=" + HttpUtility.UrlEncode(strUrl, context.Request.ContentEncoding);
+            context.Response.Redirect(strRedirect, false);
+
+        }
+
+        private bool onAuthenticateCalled;
     }
 }

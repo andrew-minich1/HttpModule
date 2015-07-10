@@ -20,14 +20,19 @@
                     </button>
                 </div>
                 <div class="collapse navbar-collapse loginMenu" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/Home/Product">Products & Services</a></li>
+                        <li><a href="/Home/AboutUs">About Us</a></li>
+                        <li><a href="/Home/Career">Careers</a></li>
+                    </ul>
 
                     @if (HttpContext.Current.User.Identity.IsAuthenticated)
                     {
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">@User.Identity.Name <span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">                                    
-                                    <li>@Html.ActionLink("Exit", "LogOff", "Account", new {@class ="logOff"})</li>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>@Html.ActionLink("Exit", "LogOff", "Account", new { @class = "logOff" })</li>
                                 </ul>
                             </li>
                         </ul>
@@ -50,7 +55,7 @@
                 <span class="glyphicon glyphicon-lock"></span> Login
             </div>
             <div class="panel-body">
-                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new Dictionary<string, object> { { "data-toggle", "validator" },{"class","loginForm"} }))
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new Dictionary<string, object> { { "data-toggle", "validator" }, { "class", "loginForm" } }))
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true)
